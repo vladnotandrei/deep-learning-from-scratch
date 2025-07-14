@@ -1,0 +1,4 @@
+*.pdf
+
+# Data
+single_layer_nn/cifar-10-batches-py/*
