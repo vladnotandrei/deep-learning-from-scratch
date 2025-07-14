@@ -74,8 +74,6 @@ def initialize_model_parameters():
 
 def apply_network(X, network):
     """
-    Apply network to data X.
-
     Args:
         X (numpy.ndarray, dtype=float64) (img_dim, n_imgs): Data.
         network (dict): Model parameters W and b.
@@ -92,8 +90,15 @@ def apply_network(X, network):
     return P
 
 
-
-
-
-
-
+def compute_loss(W, P, y, lmbda):
+    """
+    Args:
+        P (numpy.ndarray, dtype=float64) (n_labels, n_imgs): Probability for each label for each image.
+        y (numpy.ndarray, dtype=int32) (1, n_imgs): Ground truth labels as ints between 0 to 9, for each img whose predicted labels are in P.
+    Returns:
+        (float) Mean cross-entropy loss of network's predictions relative to ground truth labels.
+    """
+    n_imgs = P.shape[1]
+    cross_entropies = -np.log(P[y, np.arange(n_imgs)])  # Cross-entropy for each image, (n_imgs,)
+    reg_term = lmbda * np.sum(np.square(W))  # scalar
+    return (np.sum(cross_entropies) / n_imgs) + reg_term
